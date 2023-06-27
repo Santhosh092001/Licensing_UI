@@ -1,0 +1,77 @@
+<div class="container-fluid">
+
+    <div>
+
+        <nb-card>
+
+            <nb-card-header class="d-flex justify-content-between">
+                {{headerValue}}
+                <button nbButton status="success"size="medium" shape="semi-round" (click)="addProduct()">Add Product</button>
+            </nb-card-header>
+
+            <nb-card-body>
+
+                <div class="row">
+
+                    <div class="col-12 col-md-5 list-container">
+
+                        <div *ngFor="let product of products" class="product-list" (click)="changeData(product)">
+                            <p>{{product.Name}}</p>
+                            <p>{{product.Version}}</p>
+                            <hr>
+                        </div>
+
+                    </div>
+
+                    <div class="vertical col-1 d-none d-md-block"></div>
+
+                    <div class="col-12 col-md-6 rowgap">
+
+                        <div>
+                            <form [formGroup]="productForm" class="row row-wrap gap_col-3 gap_row-3">
+
+                                <div class=" d-flex flex-column">
+                                    <p><b>Name</b></p>
+                                    <input nbInput shape="round" type="text" placeholder="Name" formControlName="Name">
+                                    <div>
+                                        <span *ngIf="productForm.get('Name')?.hasError('required') && productForm.get('Name')?.touched">
+                                            Name is required
+                                        </span>
+                                        <span *ngIf="productForm.get('Name')?.hasError('pattern')">
+                                            Name contain 4-15 characters
+                                        </span>
+                                    </div>
+                                </div>
+    
+                                <div class=" d-flex flex-column">
+                                    <p><b>Version</b></p>
+                                    <input nbInput shape="round" type="text" placeholder="Version" formControlName="Version">
+                                    <div>
+                                        <span *ngIf="productForm.get('Version')?.hasError('required') && productForm.get('Version')?.touched">
+                                            Version is required
+                                        </span>
+                                        <span *ngIf="productForm.get('Version')?.hasError('pattern')">
+                                            Version contain 4-15 characters
+                                        </span>
+                                    </div>
+                                </div>
+    
+                            </form>
+                        </div>
+
+                        <div class="d-flex justify-content-end columngap p-5">
+                            <button nbButton status="warning"size="medium" shape="semi-round">Clear</button>
+                            <button nbButton status="primary"size="medium" shape="semi-round">{{btnValue}}</button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </nb-card-body>
+
+        </nb-card>
+
+    </div>
+
+</div>

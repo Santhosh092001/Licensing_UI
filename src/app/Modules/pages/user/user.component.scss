@@ -1,0 +1,49 @@
+.columngap
+{
+    column-gap: 10px;
+}
+
+.gap_col-3
+{
+    column-gap: 40px;
+}
+
+.gap_row-3
+{
+    row-gap: 30px;
+}
+
+.vertical
+{
+    border-left: 3px solid grey;
+}
+
+.list-container
+{
+    overflow-x:auto;
+    height: 50vh;
+}
+
+button
+{
+    height: 40px !important;
+}
+
+
+nb-card-header
+{
+    background-color: rgb(59, 137, 253);
+    color: white;
+    h1{
+        color: white;
+    }
+}
+
+span{
+    color: red;
+}
+
+.userList
+{
+    cursor: pointer;
+}

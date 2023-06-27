@@ -1,0 +1,83 @@
+<div class="container-fluid">
+
+    <div>
+
+        <nb-card>
+
+            <nb-card-header class="d-flex justify-content-between">
+                {{headerValue}}
+                <button nbButton status="success"size="medium" shape="semi-round" (click)="addMap()">Add</button>
+            </nb-card-header>
+
+            <nb-card-body>
+
+                <div class="row">
+
+                    <div class="col-12 col-md-5 list-container">
+
+                        <div *ngFor="let productCustomer of productCustomers" class="id-list" (click)="changeData(product)"
+                        >
+                            <p>ProductId  : {{productCustomer.ProductId}}</p>
+                            <p>CustomerId : {{productCustomer.CustomerId}}</p>
+                            <hr>
+                        </div>
+
+                    </div>
+
+                    <div class="vertical col-1 d-none d-md-block"></div>
+
+                    <div class="col-12 col-md-6 rowgap">
+
+                        <div>
+                            <form [formGroup]="productCustomerGroup" class="row row-wrap gap_col-3 gap_row-3">
+
+                                <div class=" d-flex flex-column">
+                                    <p><b>ProductId</b></p>
+                                    <!-- <input nbInput shape="round" type="number" placeholder="ProductId" formControlName="ProductId"> -->
+
+
+                                     <nb-select shape="round" placeholder="ProductId" formControlName="ProductId">
+                                        <nb-option *ngFor="let product of productId" value="{{product}}">{{product}}</nb-option>
+                                      </nb-select>
+
+                                    <div>
+                                        <span *ngIf="productCustomerGroup.get('ProductId')?.hasError('required') && productCustomerGroup.get('ProductId')?.touched">
+                                            ProductId is required
+                                        </span>
+                                    </div>
+                                </div>
+    
+                                <div class=" d-flex flex-column">
+                                    <p><b>CustomerId</b></p>
+                                    <!-- <input nbInput shape="round" type="text" placeholder="CustomerId" formControlName="CustomerId"> -->
+
+                                    <nb-select shape="round" placeholder="CustomerId" formControlName="CustomerId">
+                                        <nb-option *ngFor="let customer of customerId" value="{{customer}}">{{customer}}</nb-option>
+                                      </nb-select>
+
+                                    <div>
+                                        <span *ngIf="productCustomerGroup.get('CustomerId')?.hasError('required') && productCustomerGroup.get('CustomerId')?.touched">
+                                            CustomerId is required
+                                        </span>
+                                    </div>
+                                </div>
+    
+                            </form>
+                        </div>
+
+                        <div class="d-flex justify-content-end columngap p-5">
+                            <button nbButton status="warning"size="medium" shape="semi-round">Clear</button>
+                            <button nbButton status="primary"size="medium" shape="semi-round">{{btnValue}}</button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </nb-card-body>
+
+        </nb-card>
+
+    </div>
+
+</div>

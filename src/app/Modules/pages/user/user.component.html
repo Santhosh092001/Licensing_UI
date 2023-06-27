@@ -1,0 +1,118 @@
+<div class="container-fluid">
+    <div>
+        <nb-card>
+            <nb-card-header class="d-flex justify-content-between">
+                <h1>{{headerValue}}</h1>
+                <button nbButton status="success"size="medium" shape="semi-round" (click)="addUser()">Add User</button>
+            </nb-card-header>
+            <nb-card-body>
+                <div class="row">
+                    <div class="col-12 col-md-5 list-container">
+                        <div *ngFor="let user of Users" class="userList" (click)="changeData(user)">
+                            <p>{{user.UserName}}</p>
+                            <p>{{user.Email}}</p>
+                            <hr>
+                        </div>
+                    </div>
+
+
+                    <div class="vertical col-1 d-none d-md-block"></div>
+
+                    <!-- Forms Division -->
+
+                    <div class="col-12 col-md-6">
+
+                        <!-- Forms -->
+
+                        <div>
+                            <form [formGroup]="UserFormGroup" class="row row-wrap gap_col-3 gap_row-3">
+                                <div class=" d-flex flex-column">
+                                    <p><b>FirstName</b></p>
+                                    <input nbInput shape="round" type="text" placeholder="First Name" formControlName="FirstName">
+                                    <div>
+                                        <span *ngIf="UserFormGroup.get('FirstName')?.hasError('required') && UserFormGroup.get('FirstName')?.touched">
+                                            FirstName is required
+                                        </span>
+                                        <span *ngIf="UserFormGroup.get('FirstName')?.hasError('pattern')">
+                                            FirstName contain 4-15 characters
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class=" d-flex flex-column">
+                                    <p><b>LastName</b></p>
+                                    <input nbInput shape="round" placeholder="LastName"  type="text"  formControlName="LastName">
+                                    <div>
+                                        <span *ngIf="UserFormGroup.get('LastName')?.hasError('required') && UserFormGroup.get('LastName')?.touched">
+                                            LastName is required
+                                        </span>
+                                        <span *ngIf="UserFormGroup.get('LastName')?.hasError('pattern')">
+                                            LastName contain 3-8 characters
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class=" d-flex flex-column">
+                                    <p><b>UserName</b></p>
+                                    <input nbInput shape="round" placeholder="UserName"  type="text"  formControlName="UserName">
+                                    <div>
+                                        <span *ngIf="UserFormGroup.get('UserName')?.hasError('required') && UserFormGroup.get('UserName')?.touched">
+                                            UserName is required
+                                        </span>
+                                        <span *ngIf="UserFormGroup.get('UserName')?.hasError('pattern')">
+                                            UserName contain 8-20 characters
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class=" d-flex flex-column">
+                                    <p><b>E-Mail</b></p>
+                                    <input nbInput shape="round" placeholder="Email"  type="text"  formControlName="Email">
+                                    <div>
+                                        <span *ngIf="UserFormGroup.get('Email')?.hasError('required') && UserFormGroup.get('Email')?.touched">
+                                            Email is required
+                                        </span>
+                                        <span *ngIf="UserFormGroup.get('Email')?.hasError('email')">
+                                            Email is Invalid
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class=" d-flex flex-column">
+                                    <p><b>Password</b></p>
+                                    <input nbInput shape="round" placeholder="Password"  type="password"  formControlName="Password">
+                                    <div>
+                                        <span *ngIf="UserFormGroup.get('Password')?.hasError('required') && UserFormGroup.get('Password')?.touched">
+                                            Password is required
+                                        </span>
+                                        <span *ngIf="UserFormGroup.get('Password')?.hasError('pattern')">
+                                            Password contains one special, Upperacase, lowercase Characters and numbers
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Buttons -->
+
+                        <div class="d-flex justify-content-end columngap">
+                            <button nbButton status="warning"size="medium" shape="semi-round" (click)="clear(btnValue)">Clear</button>
+                            <button nbButton status="primary"size="medium" shape="semi-round" (click)="open(dialog)">{{btnValue}}</button>
+                        </div>
+                    </div>
+                </div>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>
+
+
+<ng-template #dialog let-ref="dialogRef">
+    <nb-card>
+      <nb-card-header>Are you sure</nb-card-header>
+      <nb-card-body class="d-flex columngap pt-3">
+        <button nbButton status="warning"size="medium" shape="semi-round" (click)="ref.close()">No</button>
+        <button nbButton status="primary"size="medium" shape="semi-round" (click)="createOrUpdateUser(btnValue,ref)">Yes</button>
+      </nb-card-body>
+      <nb-card-footer>
+        <!-- <button nbButton (click)="ref.close()">Close Dialog</button> -->
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+  <!-- <button nbButton (click)="open(dialog)">Open Dialog</button> -->

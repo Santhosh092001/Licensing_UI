@@ -1,0 +1,31 @@
+<div class="container-fluid">
+    <div class="row">
+        <img src="assets/images/computer.jpg" alt="Responsive image" class="col-md-8 d-none d-md-block">
+        <div class="d-flex flex-column justify-content-center justify-content-md-none align-items-center col-12 col-md-4">
+            <h1 class="d-flex justify-content-center font"><b>Login</b></h1>
+            <form [formGroup]="UserLoginGroup" class="row justify-content-center">
+                <mat-form-field appearance="outline" class="col-8 col-md-10">
+                    <mat-label>Username</mat-label>
+                    <input matInput class="d-flex" type="text" formControlName="UserName">
+                    <mat-error *ngIf="UserLoginGroup.get('UserName')?.hasError('required')">
+                        Username is Required
+                    </mat-error>
+                    <mat-error *ngIf="UserLoginGroup.get('UserName')?.hasError('pattern')">
+                        Username must contain 8 characters
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-8 col-md-10">
+                    <mat-label>Password</mat-label>
+                    <input matInput class="d-flex" type="password" formControlName="Password">
+                    <mat-error *ngIf="UserLoginGroup.get('Password')?.hasError('required')">
+                        Password is Required
+                    </mat-error>
+                    <mat-error *ngIf="UserLoginGroup.get('Password')?.hasError('pattern')">
+                        Password must contain one special character, uppercase, lowercase,numbers
+                    </mat-error>
+                </mat-form-field>
+                <button class="col-5 col-md-6" mat-flat-button color="primary" (click)="Login()">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
