@@ -17,6 +17,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
       icon: 'home-outline',
       link: '/pages/dashboard',
     },
+    {
+      title: 'Generate Key',
+      icon: 'edit-2-outline',
+      link: '/pages/generatekey',
+    },
   {
     title: 'Masters',
     icon: 'layout-outline',
@@ -39,11 +44,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/pcm',
       },
     ]
-  },
-  {
-    title: 'Generate Key',
-    icon: 'edit-2-outline',
-    link: '/pages/generatekey',
   },
   // {
   //   title: 'Layout',

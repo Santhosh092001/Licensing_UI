@@ -1,1 +1,146 @@
-<p>generate-key works!</p>
+<div class="container-fluid">
+    <div>
+        <nb-card>
+            <nb-card-header>
+                Generate Key
+            </nb-card-header>
+            <nb-card-body class="row rowgap">
+
+                <div class="col-12">
+                    <form [formGroup]="generateKeyForm" class="row formrow">
+                        <div class="col-12 col-sm-5 col-md-4 d-flex flex-column">
+                            <p><b>InventoryId</b></p>
+
+
+                            <input
+                                    formControlName="InventoryId"
+                                    nbInput
+                                    type="text"
+                                    shape="round"
+                                    placeholder="InventoryId"
+                                    [nbAutocomplete]="inventoryId" />
+                              
+                                  <nb-autocomplete #inventoryId>
+                              
+                                    <nb-option *ngFor="let inventory of inventories" [value]="inventory.ProductId + ' - ' + inventory.ProductName + ' - ' + inventory.CustomerName">
+                                        {{inventory.ProductId}} - {{inventory.ProductName}} - {{inventory.CustomerName}}
+                                    </nb-option>
+                              
+                                  </nb-autocomplete>
+
+
+                            <!-- <nb-select shape="round" placeholder="InventoryId" formControlName="InventoryId">
+                                <nb-option *ngFor="let inventory of inventories" [value]="inventory.ProductId">{{inventory.ProductId}} - {{inventory.ProductName}} - {{inventory.CustomerName}}</nb-option>
+                            </nb-select> -->
+
+                            <div>
+                                <span *ngIf="generateKeyForm.get('InventoryId')?.hasError('required') && generateKeyForm.get('InventoryId')?.touched">
+                                    InventoryId is required
+                                </span>
+                                <span *ngIf="generateKeyForm.get('InventoryId')?.hasError('pattern')">
+                                    InventoryId contain 4-15 characters
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-5 col-md-4 d-flex flex-column">
+                            <p><b>SerialNumber</b></p>
+                            <input nbInput shape="round" type="text" placeholder="SerialNumber" formControlName="SerialNumber">
+                            <div>
+                                <span *ngIf="generateKeyForm.get('SerialNumber')?.hasError('required') && generateKeyForm.get('SerialNumber')?.touched">
+                                    SerialNumber is required
+                                </span>
+                                <span *ngIf="generateKeyForm.get('SerialNumber')?.hasError('minlength')">
+                                    Minimum Length is 10
+                                </span>
+                                <span *ngIf="generateKeyForm.get('SerialNumber')?.hasError('maxlength')">
+                                    Maximum Length is 50
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-5 col-md-4 d-flex flex-column">
+                            <p><b>Machine Id</b></p>
+                            <input nbInput shape="round" type="text" placeholder="Machine Id" formControlName="MachineId">
+                            <div>
+                                <span *ngIf="generateKeyForm.get('MachineId')?.hasError('required') && generateKeyForm.get('MachineId')?.touched">
+                                    MachineId is required
+                                </span>
+                                <span *ngIf="generateKeyForm.get('MachineId')?.hasError('minlength')">
+                                    Minimum Length is 10
+                                </span>
+                                <span *ngIf="generateKeyForm.get('MachineId')?.hasError('maxlength')">
+                                    Maximum Length is 20
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-5 col-md-4 d-flex flex-column">
+                            <p><b>MACAddress</b></p>
+                            <input nbInput shape="round" type="text" placeholder="MACAddress" formControlName="MACAddress">
+                            <div>
+                                <span *ngIf="generateKeyForm.get('MACAddress')?.hasError('required') && generateKeyForm.get('MACAddress')?.touched">
+                                    MACAddress is required
+                                </span>
+                                <span *ngIf="generateKeyForm.get('MACAddress')?.hasError('minlength')">
+                                    Minimum Length is 10
+                                </span>
+                                <span *ngIf="generateKeyForm.get('MACAddress')?.hasError('maxlength')">
+                                    Maximum Length is 50
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-5 col-md-4 d-flex flex-column">
+                            <p><b>ExpiryDate</b></p>
+                            <!-- <input nbInput shape="round" type="text" placeholder="ExpiryDate" formControlName="ExpiryDate"> -->
+                            <input nbInput shape="round" type="date" placeholder="Expiry Date" formControlName="ExpiryDate">
+                            <!-- <nb-datepicker #formpicker></nb-datepicker> -->
+                            <!-- <input type="date"  formControlName="ExpiryDate"> -->
+                            <div>
+                                <span *ngIf="generateKeyForm.get('ExpiryDate')?.hasError('required') && generateKeyForm.get('ExpiryDate')?.touched">
+                                    ExpiryDate is required
+                                </span>
+                                <span *ngIf="generateKeyForm.get('ExpiryDate')?.hasError('pattern')">
+                                    ExpiryDate contain 4-15 characters
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12 col-sm-5 col-md-4 d-flex justify-content-start align-items-end">
+                            <button class="w-50" nbButton status="success"size="medium" shape="semi-round" (click)="generate()">Generate</button>
+                        </div>
+                        
+                    </form>
+                </div>
+                
+
+                <div class="col-12 row">
+                    <div class="col-10">
+                        <div>
+                            <p><b>Encrypted Key</b></p>
+                            <textarea nbInput shape="round" #generatekey fullWidth placeholder="Key" [value]="securityKey"></textarea>
+                        </div>
+                        <div>
+                            <button class="btncopy" nbButton status="primary"size="medium" shape="semi-round" (click)="decryptKey(generatekey.value)">
+                                Decrypt
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-2 d-flex justify-content-start align-items-center">
+                        <button class="btncopy" nbButton status="primary"size="medium" shape="semi-round" (click)="copyText(generatekey.value)">
+                            <nb-icon icon="copy-outline"></nb-icon>
+                            Copy
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-10">
+                    <p><b>Decrypted Key</b></p>
+                    <textarea class="DecryptTextarea" nbInput shape="round" fullWidth placeholder="Decrypt Key" [value]="DecryptKey"></textarea>
+                </div>
+                    
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

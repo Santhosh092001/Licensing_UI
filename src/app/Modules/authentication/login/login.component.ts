@@ -31,9 +31,17 @@ export class LoginComponent implements OnInit {
       this.authservice.jwtAuthentication(this.UserLoginGroup.value)
         .subscribe({
           next: (data) => {
-            localStorage.setItem('Token', data.Token);
-            this.showToast(data.message, 'success', 'bottom-end');
-            this._router.navigate(['/pages/dashboard']);
+            console.log("Data : ", data);
+            if(data.err != true)
+            {
+              localStorage.setItem('Token', data.Token);
+              this.showToast(data.message, 'success', 'bottom-end');
+              this._router.navigate(['/pages/dashboard']);
+            }
+            else
+            {
+              this.showToast(data.Message, 'danger', 'bottom-end');
+            }
           }, error: (err) => {
             this.showToast(err.error, 'danger', 'bottom-end');
           },

@@ -36,7 +36,7 @@ export class AuthService {
 
   jwtAuthentication(user:any) : Observable<any>
   {
-    return this._httpClient.post('Authenticate',user);
+    return this._httpClient.post('Authentication',user);
   }
 
   createUser(newUser:any) : Observable<any>

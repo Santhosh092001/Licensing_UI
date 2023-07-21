@@ -15,7 +15,7 @@
 
                     <div class="col-12 col-md-5 list-container">
 
-                        <div *ngFor="let customer of customers" class="customer-list" (click)="changeData(customer)">
+                        <div *ngFor="let customer of customerList" class="customer-list" (click)="changeData(customer)">
                             <p>{{customer.Name}}</p>
                             <p>{{customer.Email}}</p>
                             <hr>
@@ -37,6 +37,12 @@
                                         <span *ngIf="customerForm.get('Name')?.hasError('required') && customerForm.get('Name')?.touched">
                                             Name is required
                                         </span>
+                                        <span *ngIf="customerForm.get('Name')?.hasError('minlength')">
+                                            Minimum length is 5
+                                        </span>
+                                        <span *ngIf="customerForm.get('Name')?.hasError('maxlength')">
+                                            Maximum length is 20
+                                        </span>
                                     </div>
                                 </div>
     
@@ -46,6 +52,12 @@
                                     <div>
                                         <span *ngIf="customerForm.get('SPOC')?.hasError('required') && customerForm.get('SPOC')?.touched">
                                             SPOC is required
+                                        </span>
+                                        <span *ngIf="customerForm.get('SPOC')?.hasError('minlength')">
+                                            Minimum length is 5
+                                        </span>
+                                        <span *ngIf="customerForm.get('SPOC')?.hasError('maxlength')">
+                                            Maximum length is 20
                                         </span>
                                     </div>
                                 </div>
@@ -57,8 +69,8 @@
                                         <span *ngIf="customerForm.get('Email')?.hasError('required') && customerForm.get('Email')?.touched">
                                             Email is required
                                         </span>
-                                        <span *ngIf="customerForm.get('Email')?.hasError('pattern')">
-                                            Email contain 4-15 characters
+                                        <span *ngIf="customerForm.get('Email')?.hasError('email')">
+                                            Invalid Email
                                         </span>
                                     </div>
                                 </div>
@@ -70,6 +82,9 @@
                                         <span *ngIf="customerForm.get('Phone')?.hasError('required') && customerForm.get('Phone')?.touched">
                                             Phone is required
                                         </span>
+                                        <span *ngIf="customerForm.get('Phone')?.hasError('minlength')">
+                                            Minimum length is 10
+                                        </span>
                                     </div>
                                 </div>
     
@@ -77,8 +92,8 @@
                         </div>
 
                         <div class="d-flex justify-content-end columngap p-5">
-                            <button nbButton status="warning"size="medium" shape="semi-round">Clear</button>
-                            <button nbButton status="primary"size="medium" shape="semi-round">{{btnValue}}</button>
+                            <button nbButton status="warning"size="medium" shape="semi-round" (click)="clear(btnValue)">Clear</button>
+                            <button nbButton status="primary"size="medium" shape="semi-round" (click)="open(dialog, btnValue)">{{btnValue}}</button>
                         </div>
 
                     </div>
@@ -92,3 +107,22 @@
     </div>
 
 </div>
+
+
+
+
+
+
+<ng-template #dialog let-ref="dialogRef">
+    <nb-card>
+      <nb-card-header>Are you sure</nb-card-header>
+      <nb-card-body class="d-flex columngap pt-3">
+        <button nbButton status="warning"size="medium" shape="semi-round" (click)="ref.close()">No</button>
+        <button nbButton status="primary"size="medium" shape="semi-round" (click)="createOrUpdateUser(btnValue,ref)">Yes</button>
+      </nb-card-body>
+      <nb-card-footer>
+        <!-- <button nbButton (click)="ref.close()">Close Dialog</button> -->
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+  <!-- <button nbButton (click)="open(dialog)">Open Dialog</button> -->

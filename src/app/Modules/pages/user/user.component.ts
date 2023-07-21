@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbDialogService, NbToastrService } from '@nebular/theme';
 import { AuthService } from '../../../../Services/auth.service';
 import { User } from '../../../Models/User';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'ngx-user',
@@ -126,14 +125,20 @@ export class UserComponent implements OnInit {
       })
   }
 
-  open(dialog: TemplateRef<any>) {
+  open(dialog: TemplateRef<any>, btnValue) {
     if(this.UserFormGroup.valid)
     {
+      if(btnValue == 'Create')
+      {
+        this.dialogService.open(dialog);
+      }
+      else
+      {
         if(    this.data.UserName != this.UserFormGroup.value.UserName 
-           ||  this.data.FirstName != this.UserFormGroup.value.FirstName
-           ||  this.data.LastName != this.UserFormGroup.value.LastName 
-           ||  this.data.Email != this.UserFormGroup.value.Email
-           ||  this.data.Password != this.UserFormGroup.value.Password  )
+          ||  this.data.FirstName != this.UserFormGroup.value.FirstName
+          ||  this.data.LastName != this.UserFormGroup.value.LastName 
+          ||  this.data.Email != this.UserFormGroup.value.Email
+          ||  this.data.Password != this.UserFormGroup.value.Password  )
         {
           this.dialogService.open(dialog);
         }
@@ -141,6 +146,7 @@ export class UserComponent implements OnInit {
         {
           this.showToast('User not Updated', 'danger', 'bottom-end')
         }
+      }
     }
     else
     {

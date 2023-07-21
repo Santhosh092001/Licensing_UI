@@ -16,7 +16,7 @@ export class CustomInterceptor implements HttpInterceptor {
 
     const localToken = localStorage.getItem('Token');
     const newRequest = request.clone({
-      url : 'https://localhost:7093/' + request.url
+      url : 'https://localhost:7051/' + request.url
       ,
       headers : request.headers.set('Authorization', `bearer ${localToken}`
       )

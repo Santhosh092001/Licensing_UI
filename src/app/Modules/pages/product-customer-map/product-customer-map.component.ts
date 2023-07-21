@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CUSTOMERS, PRODUCTS } from '../../../Models/User';
+import { ProductService } from '../../../../Services/product.service';
+import { CustomerService } from '../../../../Services/customer.service';
+import { ProductCustomerMapService } from '../../../../Services/product-customer-map.service';
+import { NbDialogService } from '@nebular/theme';
+import { AuthService } from '../../../../Services/auth.service';
+import { ProductCustomerMap } from '../../../Models/ProductCustomerMap';
 
 @Component({
   selector: 'ngx-product-customer-map',
@@ -10,41 +15,103 @@ import { CUSTOMERS, PRODUCTS } from '../../../Models/User';
 export class ProductCustomerMapComponent implements OnInit {
 
   productCustomerGroup : FormGroup
-  headerValue = 'Update Product'
+  headerValue = 'Update Product Customer Map'
   btnValue = 'Update'
-  product = PRODUCTS;
-  customer = CUSTOMERS;
-  productId = [] ;
-  customerId = [] ;
-  productCustomers = [
-    {
-      ProductId : 1,
-      CustomerId : 5
-    },
-    {
-      ProductId : 1,
-      CustomerId : 5
-    },
-    {
-      ProductId : 1,
-      CustomerId : 5
-    }
-  ]
+  productsName  = [];
+  customersName = [];
+  ProductCutomerMaps : any;
+  data: any;
 
-  constructor(private _fb : FormBuilder)
+  constructor(private _fb : FormBuilder, 
+              private dialogService: NbDialogService,
+              private _authService : AuthService,
+              private _productService : ProductService,
+              private _CustomerService : CustomerService, 
+              private _ProductCustomerService : ProductCustomerMapService )
   {
     
     this.productCustomerGroup = _fb.group({
-      ProductId : ['', [Validators.required, Validators.pattern("[0-9].{0,6}")]],
-      CustomerId : ['', [Validators.required, Validators.pattern("[0-9].{0,6}")]]
+      ProductName : ['', Validators.required],
+      CustomerName : ['', Validators.required]
     })
 
   }
 
+
+  
   ngOnInit(): void {
-    this.getProductId();
-    this.getCustomerId();
-    this.changeData(this.productCustomers[0]);
+
+    this.gets();
+    this.getCustomersName();
+    this.getProductsName();
+  
+  }
+
+  gets()
+  {
+    this._ProductCustomerService.gets()
+    .subscribe({
+      next : (data) => 
+      {
+        this.ProductCutomerMaps = data;
+        this.changeData(this.ProductCutomerMaps[0]);
+      }
+    })
+  }
+
+
+  createproductCustomer()
+  {
+    this._ProductCustomerService.createProductCustomer(this.productCustomerGroup.value)
+    .subscribe({
+      next : (data) => 
+      {
+        this._authService.showToast(data.message, 'success', 'bottom-end');
+        this.gets();
+      },error : (err) => {
+        this._authService.showToast(err.error, 'danger', 'bottom-end');
+      },
+    })
+  }
+
+  updateproductCustomer()
+  {
+    const productCustomer = new ProductCustomerMap();
+    productCustomer.Id = this.data.Id;
+    productCustomer.CustomerId = this.data.CustomerId;
+    productCustomer.ProductId = this.data.ProductId;
+    this._ProductCustomerService.updateProductCustomer(productCustomer)
+    .subscribe({
+      next : (data) => 
+      {
+        this._authService.showToast(data.message, 'success', 'bottom-end');
+        this.gets();
+      },error : (err) => {
+        this._authService.showToast(err.error, 'danger', 'bottom-end');
+      },
+    })
+  }
+
+  getProductsName()
+  {
+    this._productService.getProductsName()
+    .subscribe({
+      next : (data) => 
+      {
+        this.productsName = data;
+      }
+    })
+  }
+
+  getCustomersName()
+  {
+    this._CustomerService.getCustomersName()
+    .subscribe({
+      next : (data) => 
+      {
+        this.customersName = data;
+      }
+    })
   }
 
   addMap()
@@ -54,25 +121,64 @@ export class ProductCustomerMapComponent implements OnInit {
     this.productCustomerGroup.reset();
   }
 
-  changeData(data)
+  changeData(changedata)
   {
     this.headerValue = 'Update Product Customer Map';
     this.btnValue = 'Update';
-    this.productCustomerGroup.patchValue(data);
+    this.data = changedata
+    this.productCustomerGroup.patchValue(changedata);
   }
 
-  getProductId()
+
+  createOrUpdateproductCustomer(btnValue,ref)
   {
-    this.product.forEach(element => {
-      this.productId.push(element.Id);
-    });
+    if (btnValue == 'Create') {
+      this.createproductCustomer();
+    }
+    else {
+      this.updateproductCustomer();
+    }
+    ref.close(true);
   }
 
-  getCustomerId()
+
+  clear(btnValue)
   {
-    this.customer.forEach(element => {
-      this.customerId.push(element.Id);
-    });
+    if (btnValue == 'Update') {
+      this.productCustomerGroup.patchValue(this.data)
+    }
+    else {
+      this.productCustomerGroup.reset();
+    }
   }
+
+
+  open(dialog: TemplateRef<any>, btnValue) {
+    if(this.productCustomerGroup.valid)
+    {
+      if(btnValue == 'Create')
+      {
+        this.dialogService.open(dialog);
+      }
+      else
+      {
+        if(   this.data.ProductName != this.productCustomerGroup.value.ProductName 
+          ||  this.data.CustomerName != this.productCustomerGroup.value.CustomerName  )
+        {
+          this.dialogService.open(dialog);
+        }
+        else
+        {
+          this._authService.showToast('Product Customer Map not Updated', 'danger', 'bottom-end')
+        }
+      }
+    }
+    else
+    {
+      this._authService.showToast('Enter Valid Product Customer Map Details', 'danger', 'bottom-end')
+    }
+  }
+
+
 
 }

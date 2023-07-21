@@ -15,10 +15,10 @@
 
                     <div class="col-12 col-md-5 list-container">
 
-                        <div *ngFor="let productCustomer of productCustomers" class="id-list" (click)="changeData(product)"
+                        <div *ngFor="let productCustomer of ProductCutomerMaps" class="id-list" (click)="changeData(productCustomer)"
                         >
-                            <p>ProductId  : {{productCustomer.ProductId}}</p>
-                            <p>CustomerId : {{productCustomer.CustomerId}}</p>
+                            <p>ProductName  : {{productCustomer.ProductName}}</p>
+                            <p>CustomerName : {{productCustomer.CustomerName}}</p>
                             <hr>
                         </div>
 
@@ -31,33 +31,56 @@
                         <div>
                             <form [formGroup]="productCustomerGroup" class="row row-wrap gap_col-3 gap_row-3">
 
-                                <div class=" d-flex flex-column">
-                                    <p><b>ProductId</b></p>
-                                    <!-- <input nbInput shape="round" type="number" placeholder="ProductId" formControlName="ProductId"> -->
+                                <div class="col-12 col-sm-5 d-flex flex-column">
+                                    <p><b>Product Name</b></p>
 
+                                    <input
+                                    formControlName="ProductName"
+                                    nbInput
+                                    type="text"
+                                    shape="round"
+                                    placeholder="ProductName"
+                                    [nbAutocomplete]="productName" />
+                              
+                                  <nb-autocomplete #productName>
+                              
+                                    <nb-option *ngFor="let product of productsName" [value]="product">
+                                      {{ product }}
+                                    </nb-option>
+                              
+                                  </nb-autocomplete>
 
-                                     <nb-select shape="round" placeholder="ProductId" formControlName="ProductId">
-                                        <nb-option *ngFor="let product of productId" value="{{product}}">{{product}}</nb-option>
-                                      </nb-select>
 
                                     <div>
-                                        <span *ngIf="productCustomerGroup.get('ProductId')?.hasError('required') && productCustomerGroup.get('ProductId')?.touched">
-                                            ProductId is required
+                                        <span *ngIf="productCustomerGroup.get('ProductName')?.hasError('required') && productCustomerGroup.get('ProductName')?.touched">
+                                            Product Name is required
                                         </span>
                                     </div>
                                 </div>
     
-                                <div class=" d-flex flex-column">
-                                    <p><b>CustomerId</b></p>
-                                    <!-- <input nbInput shape="round" type="text" placeholder="CustomerId" formControlName="CustomerId"> -->
+                                <div class="col-12 col-sm-5 d-flex flex-column">
+                                    <p><b>Customer Name</b></p>
 
-                                    <nb-select shape="round" placeholder="CustomerId" formControlName="CustomerId">
-                                        <nb-option *ngFor="let customer of customerId" value="{{customer}}">{{customer}}</nb-option>
-                                      </nb-select>
+                                    <input
+                                    formControlName="CustomerName"
+                                    nbInput
+                                    type="text"
+                                    shape="round"
+                                    placeholder="Customer Name"
+                                    [nbAutocomplete]="customerName" />
+                              
+                                  <nb-autocomplete #customerName>
+                              
+                                    <nb-option *ngFor="let customer of customersName" [value]="customer">
+                                      {{ customer }}
+                                    </nb-option>
+                              
+                                  </nb-autocomplete>
+
 
                                     <div>
-                                        <span *ngIf="productCustomerGroup.get('CustomerId')?.hasError('required') && productCustomerGroup.get('CustomerId')?.touched">
-                                            CustomerId is required
+                                        <span *ngIf="productCustomerGroup.get('CustomerName')?.hasError('required') && productCustomerGroup.get('CustomerName')?.touched">
+                                            Customer Name is required
                                         </span>
                                     </div>
                                 </div>
@@ -66,8 +89,8 @@
                         </div>
 
                         <div class="d-flex justify-content-end columngap p-5">
-                            <button nbButton status="warning"size="medium" shape="semi-round">Clear</button>
-                            <button nbButton status="primary"size="medium" shape="semi-round">{{btnValue}}</button>
+                            <button nbButton status="warning"size="medium" shape="semi-round" (click)="clear(btnValue)">Clear</button>
+                            <button nbButton status="primary"size="medium" shape="semi-round" (click)="open(dialog, btnValue)">{{btnValue}}</button>
                         </div>
 
                     </div>
@@ -81,3 +104,18 @@
     </div>
 
 </div>
+
+
+<ng-template #dialog let-ref="dialogRef">
+    <nb-card>
+      <nb-card-header>Are you sure</nb-card-header>
+      <nb-card-body class="d-flex columngap pt-3">
+        <button nbButton status="warning"size="medium" shape="semi-round" (click)="ref.close()">No</button>
+        <button nbButton status="primary"size="medium" shape="semi-round" (click)="createOrUpdateproductCustomer(btnValue,ref)">Yes</button>
+      </nb-card-body>
+      <nb-card-footer>
+        <!-- <button nbButton (click)="ref.close()">Close Dialog</button> -->
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+  <!-- <button nbButton (click)="open(dialog)">Open Dialog</button> -->

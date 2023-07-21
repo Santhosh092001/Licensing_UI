@@ -1,1 +1,151 @@
-<p>dashboard works!</p>
+<div class="container-fluid">
+    <div>
+        <nb-card>
+            <nb-card-header>
+              <!-- <mat-form-field class="w-100">
+                <mat-label>Search</mat-label>
+                <input matInput #input (keyup)="applyFilter(input.value)">
+              </mat-form-field> -->
+              <div class="row">
+                <form [formGroup]="searchForm" class="row">
+
+                  <div class="col-12 col-md-3">
+                    <mat-form-field class="col-12" appearance="outline">
+                    <mat-label>Product Name</mat-label>
+                    <!-- <input matInput type="text" (keydown)="applyFilter()" formControlName="ProductName"> -->
+
+
+
+                    <input type="text"
+                          placeholder="Product Name"
+                          matInput
+                          formControlName="ProductName"
+                          [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let Product of FilteredProducts" [value]="Product">
+                        {{Product}}
+                      </mat-option>
+                    </mat-autocomplete>
+
+
+
+                    </mat-form-field>
+                  </div>
+  
+                  <div class="col-12 col-md-3">
+                    <mat-form-field class="col-12" appearance="outline">
+                    <mat-label>Customer Name</mat-label>
+                    <!-- <input matInput type="text" (keydown)="applyFilter()" formControlName="CustomerName"> -->
+
+
+
+                    <input type="text"
+                          placeholder="Customer Name"
+                          matInput
+                          formControlName="CustomerName"
+                          [matAutocomplete]="Customerauto">
+                    <mat-autocomplete #Customerauto="matAutocomplete">
+                      <mat-option *ngFor="let Customer of FilteredCustomers" [value]="Customer">
+                        {{Customer}}
+                      </mat-option>
+                    </mat-autocomplete>
+
+
+
+
+                    </mat-form-field>
+                  </div>
+  
+                  <div class="col-12 col-md-3">
+                    <mat-form-field class="col-12" appearance="outline">
+                    <!-- <mat-label>Status</mat-label>
+                    <input matInput type="text" (keydown)="applyFilter()"  formControlName="Status"> -->
+
+
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="Status">
+                      <mat-option *ngFor="let status of StatusList" (click)="applyFilter()" [value]="status">
+                        {{status}}
+                      </mat-option>
+                    </mat-select>
+                
+
+
+                    </mat-form-field>
+                  </div>
+                  
+                  <div class="col-12 col-md-3 d-flex justify-content-end align-items-center">
+                    <button style="height: 35px;width: 140px;" nbButton status="success"size="medium" shape="semi-round" (click)="downloadExcel()">Download
+                      <img src="/assets/images/excel.png" style="height: 30px;">
+                    </button>
+                  </div>
+
+                </form>
+              </div>
+              
+            </nb-card-header>
+            <nb-card-body>
+                <div class="table-content">
+                  <table mat-table [dataSource]="datasource" class="mat-elevation-z8 demo-table">
+                    <ng-container matColumnDef="s-no">
+                      <th mat-header-cell *matHeaderCellDef>S.No</th>
+                      <td mat-cell *matCellDef="let element; index as i">{{i+1}}</td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="ProductId-col">
+                      <th mat-header-cell *matHeaderCellDef>Product Id</th>
+                      <td mat-cell *matCellDef="let element">{{element.ProductId}}</td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="productname-col">
+                      <th mat-header-cell *matHeaderCellDef>Product Name</th>
+                      <td mat-cell *matCellDef="let element">{{element.ProductName}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="customername-col">
+                      <th mat-header-cell *matHeaderCellDef>Customer Name</th>
+                      <td mat-cell *matCellDef="let element">{{element.CustomerName}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="mac-col">
+                      <th mat-header-cell *matHeaderCellDef>MAC Address</th>
+                      <td mat-cell *matCellDef="let element">{{element.MACAddress}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="serialno-col">
+                      <th mat-header-cell *matHeaderCellDef>Serial No</th>
+                      <td mat-cell *matCellDef="let element">{{element.SerialNumber}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="keygenerationdat-col">
+                      <th mat-header-cell *matHeaderCellDef>Generate Date</th>
+                      <td mat-cell *matCellDef="let element">{{element.KeyGenerationDate | date}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="expirydate-col">
+                      <th mat-header-cell *matHeaderCellDef>Expiry Date</th>
+                      <td mat-cell *matCellDef="let element">{{element.ExpiryDate | date}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status-col">
+                      <th mat-header-cell *matHeaderCellDef>Status</th>
+                      <td mat-cell *matCellDef="let element" [ngStyle]="{'color' : element.Status == 'Active' ? 'green' : 'red'}">{{element.Status}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="activationkey-col">
+                      <th mat-header-cell *matHeaderCellDef>Activation Key</th>
+                      <td mat-cell *matCellDef="let element">
+                        <button mat-flat-button color="primary" (click)="CopyText(element.ActivationKey)">Copy</button>
+                      </td>
+                    </ng-container>
+                  
+                    <tr mat-header-row *matHeaderRowDef="cols"></tr>
+                    <tr mat-row *matRowDef="let row; columns: cols;"></tr>
+                  </table>
+                </div>
+                <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 50]">
+                </mat-paginator>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

@@ -2,7 +2,7 @@
     <div>
         <nb-card>
             <nb-card-header class="d-flex justify-content-between">
-                <h1>{{headerValue}}</h1>
+                {{headerValue}}
                 <button nbButton status="success"size="medium" shape="semi-round" (click)="addUser()">Add User</button>
             </nb-card-header>
             <nb-card-body>
@@ -58,7 +58,7 @@
                                             UserName is required
                                         </span>
                                         <span *ngIf="UserFormGroup.get('UserName')?.hasError('pattern')">
-                                            UserName contain 8-20 characters
+                                            UserName contain 8-20 characters and numbers
                                         </span>
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@
 
                         <div class="d-flex justify-content-end columngap">
                             <button nbButton status="warning"size="medium" shape="semi-round" (click)="clear(btnValue)">Clear</button>
-                            <button nbButton status="primary"size="medium" shape="semi-round" (click)="open(dialog)">{{btnValue}}</button>
+                            <button nbButton status="primary"size="medium" shape="semi-round" (click)="open(dialog, btnValue)">{{btnValue}}</button>
                         </div>
                     </div>
                 </div>
